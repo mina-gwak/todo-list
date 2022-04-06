@@ -12,7 +12,7 @@ await db.read();
 
 server.use(middlewares);
 server.use(jsonServer.bodyParser);
+server.use(addAction(router));
 server.use(router);
-server.use(addAction(db));
 
 export default server;

@@ -1,20 +1,28 @@
-const addAction = (db) => async (req, res, next) => {
-  const actionContents = {
-    POST: [req.body.column, req.body.title],
-    DELETE: [req.body.column, req.body.title],
-    PUT: [req.body.title, req.body.contents],
-  };
-
+const addAction = (router) => ({ method, path, body }, res, next) => {
   next();
-  if (req.method === 'GET') return;
 
-  db.data.action.push({
-    user: 1,
-    type: req.method,
-    contents: actionContents[req.method],
-    executedTime: new Date(),
-  });
-  await db.write();
+  if (method === 'GET' || path === '/users') return;
+
+  if (
+    path.includes('tasks') &&
+    method === 'PATCH' &&
+    body.column !== undefined
+  ) {
+    body.prevColumn = router.db
+      .get('tasks')
+      .find({ id: body.id })
+      .value().column;
+  }
+
+  router.db
+    .get('action')
+    .push({
+      user: 1,
+      type: method,
+      contents: body,
+      executedTime: new Date(),
+    })
+    .write();
 }
 
 export default addAction;
