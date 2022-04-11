@@ -1,5 +1,5 @@
 import Component from '../core/Component.js';
-import ActionStore from '../store/ActionStore.js';
+import ActionStore from '../store/actionStore.js';
 import { calculateTimeDiff } from '../utils/index.js';
 
 class ActionLayer extends Component {
