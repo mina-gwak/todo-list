@@ -3,11 +3,11 @@ import Store from './store.js';
 
 class ActionStore extends Store {
 
-  #key = 'action';
+  #key = 'actions';
 
   async init() {
     const actions = await ActionApi.getAllActions();
-    this.setState('action', actions);
+    this.setState('actions', actions);
   }
 
   getActions() {
