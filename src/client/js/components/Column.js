@@ -1,6 +1,6 @@
 import Component from '../core/Component.js';
-import TaskStore from '../store/taskStore.js';
-import Card from './Card.js';
+import { TaskStore } from '../store/index.js';
+import { renderCards } from '../render/index.js';
 
 class Column extends Component {
   setup() {
@@ -37,14 +37,10 @@ class Column extends Component {
   }
 
   mounted() {
-    const cardFragment = document.createDocumentFragment();
-    this.$state.tasks.forEach(task => {
-      const listItem = document.createElement('li');
-      listItem.dataset.id = task.id;
-      new Card(listItem, task)
-      cardFragment.appendChild(listItem);
+    renderCards({
+      container: this.$target.querySelector('.column-card-list'),
+      tasks: this.$state.tasks
     })
-    this.$target.querySelector('.column-card-list').append(cardFragment);
   }
 }
 
