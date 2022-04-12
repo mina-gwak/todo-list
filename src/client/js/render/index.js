@@ -5,9 +5,22 @@ import { ColumnStore } from '../store/index.js';
 import Card from '../components/Card.js';
 import InputCard from '../components/InputCard.js';
 
+export const renderEditedInputCard = ({ target, column }) => {
+  const listItem = document.createElement('li');
+  const inputCard = new InputCard(listItem, {
+    column,
+    mode: 'edit',
+    card: target,
+    title: target.querySelector('.card-title').innerText,
+    contents: target.querySelector('.card-contents').innerText,
+  });
+  target.insertAdjacentElement('afterend', listItem);
+  return inputCard;
+};
+
 export const renderNewInputCard = ({ container, column }) => {
   const listItem = document.createElement('li');
-  const inputCard = new InputCard(listItem, { column });
+  const inputCard = new InputCard(listItem, { column, mode: 'new' });
   container.insertAdjacentElement('afterbegin', listItem);
   return inputCard;
 };
