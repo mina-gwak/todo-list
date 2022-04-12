@@ -38,7 +38,7 @@ const addAction = (router) => ({ method, path, body }, res, next) => {
 
   if (method === 'GET' || url === 'users') return;
 
-  if (method === 'POST') url === 'tasks' ? newBody.column = getColumnName(router, body.column) : '';
+  if (method === 'POST') url === 'tasks' ? newBody.column = getColumnName(router, body.columnId) : '';
 
   else {
     const prevData = router.db

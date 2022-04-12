@@ -5,7 +5,7 @@ import { calculateTimeDiff } from '../utils/index.js';
 class ActionLayer extends Component {
   setup() {
     this.$state = {
-      actions: ActionStore.getActions(),
+      actions: ActionStore.getAllActions(),
     };
     ActionStore.subscribe('actions', this);
   }

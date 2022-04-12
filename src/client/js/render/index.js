@@ -3,6 +3,14 @@ import Header from '../components/Header.js';
 import ActionLayer from '../components/ActionLayer.js';
 import { ColumnStore } from '../store/index.js';
 import Card from '../components/Card.js';
+import InputCard from '../components/InputCard.js';
+
+export const renderNewInputCard = ({ container, column }) => {
+  const listItem = document.createElement('li');
+  const inputCard = new InputCard(listItem, { column });
+  container.insertAdjacentElement('afterbegin', listItem);
+  return inputCard;
+};
 
 const renderColumns = ({ container, columns }) => {
   const fragment = document.createDocumentFragment();
