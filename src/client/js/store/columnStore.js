@@ -1,13 +1,18 @@
 import ColumnApi from '../api/columnApi.js';
 import Store from './store.js';
 
-class Columnstore extends Store {
-
-  #key = 'columns';
+class ColumnStore extends Store {
+  #key = 'column';
 
   async init() {
     const columns = await ColumnApi.getAllColumns();
     this.setState(this.#key, columns);
+  }
+
+  getColumnWithName(name) {
+    const columns = this.getAllColumns();
+    const targetColumn = columns.find(column => column.name === name);
+    return targetColumn;
   }
 
   getAllColumns() {
@@ -15,6 +20,6 @@ class Columnstore extends Store {
   }
 }
 
-const columnStore = new Columnstore();
+const columnStore = new ColumnStore();
 
 export default columnStore;

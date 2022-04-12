@@ -1,13 +1,17 @@
 import Component from '../core/Component.js';
 import { TaskStore } from '../store/index.js';
-import { renderCards } from '../render/index.js';
+import { renderCards, renderNewInputCard } from '../render/index.js';
 
 class Column extends Component {
+  inputCard;
+
   setup() {
     this.$state = {
       column: this.$props.column,
       tasks: TaskStore.getTasksFilteredWithColumn(this.$props.column.id),
+      isInputCardExist: false,
     };
+    TaskStore.subscribe('tasks', this);
   }
 
   template() {
@@ -39,8 +43,38 @@ class Column extends Component {
   mounted() {
     renderCards({
       container: this.$target.querySelector('.column-card-list'),
-      tasks: this.$state.tasks
-    })
+      tasks: this.$state.tasks,
+    });
+  }
+
+  notify({ tasks }) {
+    const filteredTasks = tasks.filter(
+      task => task.columnId === this.$state.column.id,
+    );
+    this.setState({
+      tasks: filteredTasks,
+      isInputCardExist: false,
+    });
+  }
+
+  setEvent() {
+    this.addEvent('click', '.add-btn', () => this.handleAddBtnClick());
+  }
+
+  removeInputCard() {
+    this.inputCard.removeCard();
+    this.inputCard = null;
+  }
+
+  handleAddBtnClick() {
+    const inputCard = this.$target.querySelector('.deactivate');
+    if (inputCard) return this.removeInputCard();
+
+    this.inputCard = renderNewInputCard({
+      container: this.$target.querySelector('.column-card-list'),
+      column: this.$props.column,
+    });
+    this.$state.isInputCardExist = true;
   }
 }
 
