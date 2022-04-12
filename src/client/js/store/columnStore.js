@@ -15,6 +15,12 @@ class ColumnStore extends Store {
     return targetColumn;
   }
 
+  getColumnWithId(id) {
+    const columns = this.getAllColumns();
+    const targetColumn = columns.find(column => column.id === id);
+    return targetColumn;
+  }
+
   getAllColumns() {
     return this.getState(this.#key);
   }
