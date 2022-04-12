@@ -14,29 +14,54 @@ class InputCard extends Component {
               <textarea class='card-contents' name='contents' placeholder='내용을 입력하세요' maxlength='500' rows='1'></textarea>
               <div class='card-btn-group'>
                 <button class='btn-normal card-btn-quit' type='button'>취소</button>
-                <button class='btn-accent card-btn-enroll' type='button' disabled>등록</button>
+                <button class='btn-accent card-btn-enroll' type='button' disabled></button>
               </div>
             </form>`;
   }
 
   setEvent() {
-    this.addEvent('input', 'textarea', this.handleTextareaFocus.bind(this));
+    this.addEvent('input', 'textarea', this.handleTextareaInput.bind(this));
     this.addEvent('click', 'button', this.handleButtonClick.bind(this));
   }
 
   mounted() {
     const allTextarea = this.$target.querySelectorAll('textarea');
     allTextarea.forEach(textarea => autosize(textarea));
+    this.fillEnrollBtnName();
+    if (this.$props.mode === 'edit') this.fillTitleAndContents();
   }
 
-  handleTextareaFocus() {
-    const textareasValue = [...this.$target.querySelectorAll('textarea')];
-    const enrollBtn = this.$target.querySelector('.card-btn-enroll');
-    const isTextareaEmpty = !!textareasValue.find(
-      textarea => textarea.value === '',
-    );
+  getTitleAndContents() {
+    const title = this.$target.querySelector('.card-title');
+    const contents = this.$target.querySelector('.card-contents');
+    return { title, contents };
+  }
 
-    enrollBtn.disabled = isTextareaEmpty;
+  fillTitleAndContents() {
+    const { title, contents } = this.getTitleAndContents();
+    title.value = this.$props.title;
+    contents.value = this.$props.contents;
+  }
+
+  fillEnrollBtnName() {
+    const enrollBtnName = {
+      new: '등록',
+      edit: '수정',
+    };
+    const enrollBtn = this.$target.querySelector('.card-btn-enroll');
+    enrollBtn.innerText = enrollBtnName[this.$props.mode];
+  }
+
+  handleTextareaInput() {
+    const { title, contents } = this.getTitleAndContents();
+
+    const isTextareaEmpty = title.value === '' || contents.value === '';
+    const isSameTitleAndContents =
+      title.value === this.$props.title &&
+      contents.value === this.$props.contents;
+
+    const enrollBtn = this.$target.querySelector('.card-btn-enroll');
+    enrollBtn.disabled = isTextareaEmpty || isSameTitleAndContents;
   }
 
   async handleButtonClick(event) {
@@ -48,30 +73,48 @@ class InputCard extends Component {
 
   async createNewCard() {
     const cardInfo = this.getCardInfo();
-    const { columnId, title, contents, user } = cardInfo;
-    const { id } = user;
+    const { columnId, title, contents, userId } = cardInfo;
 
-    await TaskStore.enrollTask({
-      title,
-      contents,
-      columnId,
-      userId: id,
-    });
+    switch (this.$props.mode) {
+      case 'new': {
+        await TaskStore.enrollTask({
+          title,
+          contents,
+          columnId,
+          userId,
+        });
+        break;
+      }
+      case 'edit': {
+        const { id } = this.$props.card.dataset;
+        await TaskStore.editTask({ title, contents }, id);
+        break;
+      }
+    }
   }
 
   getCardInfo() {
-    const column = this.$target.closest('.column');
     const columnId = this.$props.column.id;
-    const title = column.querySelector('.card-title').value;
-    const contents = column.querySelector('.card-contents').value;
+    const { title, contents } = this.getTitleAndContents();
     const user = UserStore.getUser();
+    const userId = user.id;
 
-    return { columnId, title, contents, user };
+    return {
+      columnId,
+      title: title.value,
+      contents: contents.value,
+      userId,
+    };
   }
 
   removeCard() {
+    if (this.$props.mode === 'edit') this.showHiddenList();
     this.$target.remove();
     TaskStore.unsubscribe('tasks', this);
+  }
+
+  showHiddenList() {
+    this.$props.card.classList.remove('hidden');
   }
 }
 
