@@ -15,6 +15,7 @@
 body {
   height: 100vh;
   background-color: $gray-6;
+  overflow: hidden;
 }
 
 .hidden {
@@ -275,5 +276,50 @@ main {
       font-size: 1rem;
       line-height: 1rem;
     }
+  }
+}
+
+/* Alert Container */
+
+.alert {
+  &-wrapper {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    &.active {
+      display: block;
+    }
+  }
+
+  &-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 400px;
+    height: 138px;
+    background-color: $white;
+    box-shadow: 0 0 4px rgba(204, 204, 204, 0.5), 0 2px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 6px;
+    transform: translate(-50%, -50%);
+    padding: 24px;
+  }
+
+  &-text {
+    font-size: 1.28rem;
+    line-height: 1.44;
+  }
+
+  &-btn-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
   }
 }

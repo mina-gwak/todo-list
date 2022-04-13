@@ -3,7 +3,32 @@ import Header from '../components/Header.js';
 import ActionLayer from '../components/ActionLayer.js';
 import { ColumnStore } from '../store/index.js';
 import Card from '../components/Card.js';
+import Alert from '../components/Alert.js';
 import InputCard from '../components/InputCard.js';
+import Action from '../components/Action.js';
+
+export const renderActions = ({ container, actions }) => {
+  const fragment = document.createDocumentFragment();
+  if (!actions.length) {
+    const listItem = document.createElement('li');
+    listItem.innerText = '활동 기록이 없습니다.'
+    fragment.append(listItem);
+  } else {
+    actions.reverse().forEach(action => {
+      const listItem = document.createElement('li');
+      listItem.classList.add('action-list-item');
+      listItem.dataset.id = action.id;
+      new Action(listItem, { action });
+      fragment.appendChild(listItem);
+    });
+  }
+  container.innerHTML = '';
+  container.append(fragment);
+};
+
+export const renderAlert = ({ cardId }) => {
+  new Alert(document.querySelector('.alert-wrapper'), { cardId });
+};
 
 export const renderEditedInputCard = ({ target, column }) => {
   const listItem = document.createElement('li');

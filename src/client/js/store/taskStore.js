@@ -35,6 +35,11 @@ class TaskStore extends Store {
     const tasks = this.getState(this.#key);
     return tasks.filter(task => task.columnId === columnId);
   }
+
+  async deleteTask(taskId) {
+    await TaskApi.deleteTask(taskId);
+    await this.setTasks();
+  }
 }
 
 const taskStore = new TaskStore();
