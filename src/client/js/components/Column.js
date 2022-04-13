@@ -65,7 +65,12 @@ class Column extends Component {
 
   handleAddBtnClick() {
     const isInputCard = !!this.$target.querySelector('.deactivate');
-    if (isInputCard) return this.removeInputCard();
+
+    if (isInputCard) {
+      const { mode } = this.inputCard.$props;
+      this.removeInputCard();
+      if (mode === 'new') return;
+    }
 
     this.inputCard = renderNewInputCard({
       container: this.$target.querySelector('.column-card-list'),
