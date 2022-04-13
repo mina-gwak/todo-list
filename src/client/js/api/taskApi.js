@@ -5,6 +5,13 @@ const TaskApi = {
     return request(`${BASE_URL}/tasks?_expand=user`);
   },
 
+  editTask(taskInfo, taskId) {
+    return requestWithoutJson(
+      `${BASE_URL}/tasks/${taskId}`,
+      HTTP_METHOD.PATCH(taskInfo),
+    );
+  },
+
   enrollTask(taskInfo) {
     return requestWithoutJson(`${BASE_URL}/tasks`, HTTP_METHOD.POST(taskInfo));
   },

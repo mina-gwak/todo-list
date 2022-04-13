@@ -1,4 +1,6 @@
 import Component from '../core/Component.js';
+import columnStore from '../store/columnStore.js';
+import { renderEditedInputCard } from '../render/index.js';
 
 class Card extends Component {
   template() {
@@ -16,6 +18,23 @@ class Card extends Component {
               <p class='card-contents'>${this.$props.contents}</p>
               <span class='card-author'>author by ${this.$props.user.name}</span>
             </div>`;
+  }
+
+  setEvent() {
+    this.addEvent('dblclick', '.card', () => this.handleDblclick());
+  }
+
+  handleDblclick() {
+    const { inputCard } = this.$props.column;
+    if (inputCard) inputCard.removeCard();
+
+    const columnById = columnStore.getColumnWithId(this.$props.columnId);
+    this.$props.column.inputCard = renderEditedInputCard({
+      target: this.$target,
+      column: columnById,
+    });
+
+    this.$target.classList.add('hidden');
   }
 }
 

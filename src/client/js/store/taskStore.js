@@ -13,6 +13,13 @@ class TaskStore extends Store {
     this.setState(this.#key, tasks.reverse());
   }
 
+  async editTask(taskInfo, taskId) {
+    const isServerRespondedOK = await TaskApi.editTask(taskInfo, taskId); // 서버에 저장
+    if (!isServerRespondedOK) return false;
+    await this.setTasks();
+    return true;
+  }
+
   async enrollTask(taskInfo) {
     const isServerRespondedOK = await TaskApi.enrollTask(taskInfo); // 서버에 저장
     if (!isServerRespondedOK) return false;
