@@ -25,9 +25,8 @@ class Card extends Component {
   }
 
   handleDblclick() {
-    const form = this.$props.column.$target;
-    const isInputCard = !!form.querySelector('.deactivate');
-    if (isInputCard) return;
+    const { inputCard } = this.$props.column;
+    if (inputCard) inputCard.removeCard();
 
     const columnById = columnStore.getColumnWithId(this.$props.columnId);
     this.$props.column.inputCard = renderEditedInputCard({
