@@ -26,7 +26,10 @@ class Card extends Component {
 
   handleDblclick() {
     const column = columnStore.getColumnWithId(this.$props.columnId);
-    renderEditedInputCard({ target: this.$target, column });
+    this.$props.column.inputCard = renderEditedInputCard({
+      target: this.$target,
+      column,
+    });
 
     this.$target.classList.add('hidden');
   }

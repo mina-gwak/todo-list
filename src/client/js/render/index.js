@@ -37,11 +37,12 @@ const renderColumns = ({ container, columns }) => {
   container.append(fragment);
 };
 
-export const renderCards = ({ container, tasks }) => {
+export const renderCards = ({ container, tasks, column }) => {
   const fragment = document.createDocumentFragment();
   tasks.forEach(task => {
     const listItem = document.createElement('li');
     listItem.dataset.id = task.id;
+    task.column = column;
     new Card(listItem, task);
     fragment.appendChild(listItem);
   });
