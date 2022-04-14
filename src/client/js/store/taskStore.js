@@ -21,7 +21,8 @@ class TaskStore extends Store {
   }
 
   async enrollTask(taskInfo) {
-    const newTask = await TaskApi.enrollTask(taskInfo);
+    const order = this.getTasksFilteredWithColumn(taskInfo.columnId).length + 1;
+    const newTask = await TaskApi.enrollTask({ ...taskInfo, order });
     if (!newTask) return false;
     await this.setTasks();
     return true;
@@ -33,7 +34,7 @@ class TaskStore extends Store {
 
   getTasksFilteredWithColumn(columnId) {
     const tasks = this.getState(this.#key);
-    return tasks.filter(task => task.columnId === columnId);
+    return tasks.filter(task => task.columnId === columnId).sort((taskA, taskB) => taskB.order - taskA.order);
   }
 
   async deleteTask(taskId) {

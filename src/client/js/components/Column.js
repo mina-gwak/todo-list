@@ -47,7 +47,7 @@ class Column extends Component {
   notify({ tasks }) {
     const filteredTasks = tasks.filter(
       task => task.columnId === this.$state.column.id,
-    );
+    ).sort((taskA, taskB) => taskB.order - taskA.order);
     this.setState({ tasks: filteredTasks });
   }
 
