@@ -55,41 +55,16 @@ class Column extends Component {
   }
 
   setEvent() {
-    this.addEvent('click', '.add-btn', () => this.handleAddBtnClick());
+    this.addEvent('click', '.add-btn', () => this.showNewInputCard());
 
-    this.addEvent('dragstart', '.column-list-item', (event) => {
-      const card = event.target.querySelector('.card');
-      card.classList.add('place');
-    })
+    this.addEvent('dragstart', '.column-list-item', (event) => this.startDragging(event))
 
-    this.addEvent('dragend', '.column-list-item', (event) => {
-      const card = event.target.querySelector('.card');
-      card.classList.remove('place');
-      TaskStore.editTask({
-        columnId: parseInt(this.movedCardInfo.columnId),
-        order: parseInt(this.movedCardInfo.order),
-      }, this.movedCardInfo.cardId);
-    })
+    this.addEvent('dragover', '.column', (event) => this.dragging(event));
 
-    this.addEvent('dragover', '.column', (event) => {
-      event.preventDefault();
-      const container = event.currentTarget.querySelector('.column-card-list');
-      const draggingCard = document.querySelector('.place').parentNode;
-      const { afterCard, order } = this.getAfterCard(event.clientY);
-      if (afterCard) {
-        container.insertBefore(draggingCard, afterCard.parentNode);
-      } else {
-        container.append(draggingCard);
-      }
-      this.movedCardInfo = {
-        cardId: draggingCard.dataset.id,
-        columnId: container.parentNode.dataset.id,
-        order
-      }
-    })
+    this.addEvent('dragend', '.column-list-item', (event) => this.finishDragging(event));
   }
 
-  handleAddBtnClick() {
+  showNewInputCard() {
     const inputCard = this.$target.querySelector('.deactivate');
     const hiddenList = this.$target.querySelector('.hidden');
 
@@ -101,6 +76,37 @@ class Column extends Component {
       container: this.$target.querySelector('.column-card-list'),
       id: this.$props.column.id,
     });
+  }
+
+  startDragging(event) {
+    const card = event.target.querySelector('.card');
+    card.classList.add('place');
+  }
+
+  dragging(event) {
+    event.preventDefault();
+    const container = event.currentTarget.querySelector('.column-card-list');
+    const draggingCard = document.querySelector('.place').parentNode;
+    const { afterCard, order } = this.getAfterCard(event.clientY);
+    if (afterCard) {
+      container.insertBefore(draggingCard, afterCard.parentNode);
+    } else {
+      container.append(draggingCard);
+    }
+    this.movedCardInfo = {
+      cardId: draggingCard.dataset.id,
+      columnId: container.parentNode.dataset.id,
+      order
+    }
+  }
+
+  finishDragging(event) {
+    const card = event.target.querySelector('.card');
+    card.classList.remove('place');
+    TaskStore.editTask({
+      columnId: parseInt(this.movedCardInfo.columnId),
+      order: parseInt(this.movedCardInfo.order),
+    }, this.movedCardInfo.cardId);
   }
 
   getAfterCard(clientY) {

@@ -27,10 +27,7 @@ class ActionLayer extends Component {
   }
 
   setEvent() {
-    this.addEvent('click', '.close-btn', () => {
-      this.$target.classList.remove('active');
-      ActionStore.toggleIsActionLayerActive();
-    });
+    this.addEvent('click', '.close-btn', () => this.closeActionLayer());
   }
 
   mounted() {
@@ -48,6 +45,11 @@ class ActionLayer extends Component {
         actions: ActionStore.getAllActions(),
       });
     }
+  }
+
+  closeActionLayer() {
+    this.$target.classList.remove('active');
+    ActionStore.toggleIsActionLayerActive();
   }
 
   changeActionTime() {
