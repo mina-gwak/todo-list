@@ -1,5 +1,6 @@
 import TaskApi from '../api/taskApi.js';
 import Store from './store.js';
+import { ActionStore } from './index.js';
 
 class TaskStore extends Store {
   #key = 'tasks';
@@ -18,6 +19,7 @@ class TaskStore extends Store {
     const editedTask = await TaskApi.editTask(taskInfo, taskId);
     if (!editedTask) return false;
     await this.setTasks();
+    await ActionStore.setActions();
     return true;
   }
 
@@ -26,6 +28,7 @@ class TaskStore extends Store {
     const newTask = await TaskApi.enrollTask({ ...taskInfo, order });
     if (!newTask) return false;
     await this.setTasks();
+    await ActionStore.setActions();
     return true;
   }
 
@@ -45,6 +48,7 @@ class TaskStore extends Store {
   async deleteTask(taskId) {
     await TaskApi.deleteTask(taskId);
     await this.setTasks();
+    await ActionStore.setActions();
   }
 
   isMoving(taskInfo, taskId) {

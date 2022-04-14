@@ -41,17 +41,13 @@ class ActionLayer extends Component {
   }
 
   notify(state) {
-    if (this.isActionLayerToggled(state)) {
+    if (state.isActionLayerActive) {
       state.isActionLayerActive ? this.clearInterval = this.changeActionTime() : this.clearInterval();
     } else {
       this.setState({
         actions: ActionStore.getAllActions(),
       });
     }
-  }
-
-  isActionLayerToggled(state) {
-    return !Array.isArray(state);
   }
 
   changeActionTime() {

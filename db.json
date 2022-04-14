@@ -3,16 +3,26 @@
     {
       "title": "블로그에 포스팅",
       "contents": "Github 공부내용\n모던 자바스크립트 공부내용",
-      "columnId": 2,
+      "columnId": 1,
       "userId": 1,
+      "order": 1,
       "id": 1
     },
     {
-      "title": "제목222",
+      "title": "제목",
       "contents": "내용",
       "columnId": 1,
       "userId": 1,
-      "id": 2
+      "order": 2,
+      "id": 3
+    },
+    {
+      "title": "투두",
+      "contents": "내용내용",
+      "columnId": 2,
+      "userId": 1,
+      "order": 1,
+      "id": 5
     }
   ],
   "columns": [
@@ -21,8 +31,12 @@
       "id": 1
     },
     {
-      "name": "Done",
+      "name": "In Progress",
       "id": 2
+    },
+    {
+      "name": "Done",
+      "id": 3
     }
   ],
   "users": [
@@ -43,20 +57,8 @@
     {
       "id": 2,
       "userId": 1,
-      "contents": "<p><b>Have To Do</b>의 <b>제목222</b>을(를) <b>변경</b>하였습니다.</p>",
-      "executedTime": "2022-04-13T07:09:35.221Z"
-    },
-    {
-      "id": 3,
-      "userId": 1,
-      "contents": "<p><b>Have To Do</b>에 <b>sss</b>을(를) <b>등록</b>하였습니다.</p>",
-      "executedTime": "2022-04-13T07:09:41.648Z"
-    },
-    {
-      "id": 4,
-      "userId": 1,
-      "contents": "<p><b>Have To Do</b>의 <b>sss</b>을(를) <b>삭제</b>하였습니다.</p>",
-      "executedTime": "2022-04-13T07:10:41.096Z"
+      "contents": "<p><b>In Progress</b>의 <b>투두</b>을(를) <b>변경</b>하였습니다.</p>",
+      "executedTime": "2022-04-14T17:40:31.178Z"
     }
   ]
 }
