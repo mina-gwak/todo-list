@@ -53,6 +53,28 @@ class Column extends Component {
 
   setEvent() {
     this.addEvent('click', '.add-btn', () => this.handleAddBtnClick());
+
+    this.addEvent('dragstart', '.column-list-item', (event) => {
+      const card = event.target.querySelector('.card');
+      card.classList.add('place');
+    })
+
+    this.addEvent('dragend', '.column-list-item', (event) => {
+      const card = event.target.querySelector('.card');
+      card.classList.remove('place');
+    })
+
+    this.addEvent('dragover', '.column', (event) => {
+      event.preventDefault();
+      const container = event.currentTarget.querySelector('.column-card-list');
+      const draggingCard = document.querySelector('.place').parentNode;
+      const afterCard = this.getAfterCard(event.clientY);
+      if (afterCard) {
+        container.insertBefore(draggingCard, afterCard.parentNode);
+      } else {
+        container.append(draggingCard);
+      }
+    })
   }
 
   handleAddBtnClick() {
@@ -67,6 +89,17 @@ class Column extends Component {
       container: this.$target.querySelector('.column-card-list'),
       id: this.$props.column.id,
     });
+  }
+
+  getAfterCard(clientY) {
+    const listItems = [...this.$target.querySelectorAll('.card:not(.place)')];
+    return listItems.reduce((closest, listItem) => {
+      const { top, height } = listItem.getBoundingClientRect();
+      const offset = clientY - top - height / 2;
+      if (offset < 0 && offset > closest.offset) {
+        return { offset, element: listItem };
+      } else return closest;
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
   }
 }
 
