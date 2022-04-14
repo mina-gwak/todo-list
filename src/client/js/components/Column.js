@@ -3,6 +3,9 @@ import { TaskStore } from '../store/index.js';
 import { renderCards, renderNewInputCard } from '../render/index.js';
 
 class Column extends Component {
+
+  movedCardInfo;
+
   setup() {
     this.$state = {
       column: this.$props.column,
@@ -62,17 +65,26 @@ class Column extends Component {
     this.addEvent('dragend', '.column-list-item', (event) => {
       const card = event.target.querySelector('.card');
       card.classList.remove('place');
+      TaskStore.editTask({
+        columnId: parseInt(this.movedCardInfo.columnId),
+        order: parseInt(this.movedCardInfo.order),
+      }, this.movedCardInfo.cardId);
     })
 
     this.addEvent('dragover', '.column', (event) => {
       event.preventDefault();
       const container = event.currentTarget.querySelector('.column-card-list');
       const draggingCard = document.querySelector('.place').parentNode;
-      const afterCard = this.getAfterCard(event.clientY);
+      const { afterCard, order } = this.getAfterCard(event.clientY);
       if (afterCard) {
         container.insertBefore(draggingCard, afterCard.parentNode);
       } else {
         container.append(draggingCard);
+      }
+      this.movedCardInfo = {
+        cardId: draggingCard.dataset.id,
+        columnId: container.parentNode.dataset.id,
+        order
       }
     })
   }
@@ -93,13 +105,13 @@ class Column extends Component {
 
   getAfterCard(clientY) {
     const listItems = [...this.$target.querySelectorAll('.card:not(.place)')];
-    return listItems.reduce((closest, listItem) => {
+    return listItems.reduce((closest, listItem, index) => {
       const { top, height } = listItem.getBoundingClientRect();
       const offset = clientY - top - height / 2;
       if (offset < 0 && offset > closest.offset) {
-        return { offset, element: listItem };
+        return { offset, afterCard: listItem, order: listItems.length - index + 1 };
       } else return closest;
-    }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }, { offset: Number.NEGATIVE_INFINITY, order: 1 });
   }
 }
 
