@@ -5,7 +5,7 @@
       "contents": "Github 공부내용\n모던 자바스크립트 공부내용",
       "columnId": 1,
       "userId": 1,
-      "order": 1,
+      "order": 3,
       "id": 1
     },
     {
@@ -13,15 +13,15 @@
       "contents": "내용",
       "columnId": 1,
       "userId": 1,
-      "order": 2,
+      "order": 1,
       "id": 3
     },
     {
       "title": "투두",
-      "contents": "내용내용",
-      "columnId": 2,
+      "contents": "내용",
+      "columnId": 1,
       "userId": 1,
-      "order": 1,
+      "order": 2,
       "id": 5
     }
   ],
@@ -51,14 +51,37 @@
     {
       "id": 1,
       "userId": 1,
-      "contents": "<p><b>Have To Do</b>에 <b>제목</b>을(를) <b>등록</b>하였습니다.</p>",
-      "executedTime": "2022-04-13T06:59:57.298Z"
+      "type": "tasks",
+      "contents": {
+        "column": "In Progress",
+        "title": "투두",
+        "prevColumn": "Have To Do"
+      },
+      "action": "MOVE",
+      "executedTime": "2022-04-14T20:52:08.411Z"
     },
     {
       "id": 2,
       "userId": 1,
-      "contents": "<p><b>In Progress</b>의 <b>투두</b>을(를) <b>변경</b>하였습니다.</p>",
-      "executedTime": "2022-04-14T17:40:31.178Z"
+      "type": "tasks",
+      "contents": {
+        "column": "In Progress",
+        "title": "투두"
+      },
+      "action": "UPDATE",
+      "executedTime": "2022-04-14T20:52:22.633Z"
+    },
+    {
+      "id": 3,
+      "userId": 1,
+      "type": "tasks",
+      "contents": {
+        "column": "Done",
+        "title": "제목",
+        "prevColumn": "Have To Do"
+      },
+      "action": "MOVE",
+      "executedTime": "2022-04-14T20:52:28.064Z"
     }
   ]
 }
